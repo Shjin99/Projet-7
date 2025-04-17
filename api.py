@@ -5,9 +5,9 @@ from pydantic import BaseModel
 from lightgbm import LGBMClassifier
 import uvicorn
 
-# --- Chemins ---
-model_path = r"C:\Users\saida\OneDrive\Bureau\openclassroom\Projet7\backend\LGBMClassifier.pkl"
-test_path = r"C:\Users\saida\OneDrive\Bureau\openclassroom\Projet7\backend\application_test.csv"
+# --- Chemins relatifs --- 
+model_path = "LGBMClassifier.pkl"  # Modèle dans le même répertoire que api.py
+test_path = "application_test.csv"  # Données de test dans le même répertoire que api.py
 
 # --- Charger le modèle pré-entraîné ---
 model = pickle.load(open(model_path, 'rb'))
