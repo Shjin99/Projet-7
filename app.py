@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 
 # URL de ton API FastAPI
-API_URL = "http://127.0.0.1:8000/predict"  # Si ton API tourne en local sur ce port, sinon mets l'URL correcte
+API_URL = "https://credit-api-j1n5.onrender.com/predict"  # Si ton API tourne en local sur ce port, sinon mets l'URL correcte
 
 # Titre de l'application Streamlit
 st.title("Prédiction de défaut de crédit")
