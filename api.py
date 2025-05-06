@@ -3,7 +3,6 @@ from pydantic import BaseModel
 import pandas as pd
 import pickle
 import os
-
 from lightgbm import LGBMClassifier
 
 # Créer l'API
@@ -24,8 +23,10 @@ def load_test_data():
         raise FileNotFoundError(f"Fichier introuvable : {test_path}")
     
     df = pd.read_csv(test_path, index_col=0)
-    if "TARGET" not in df.columns:
-        raise ValueError("La colonne 'TARGET' est absente du fichier.")
+    
+    # Vérifier si la colonne 'TARGET' existe et ne pas l'utiliser si elle est absente
+    if "TARGET" in df.columns:
+        df = df.drop(columns=["TARGET"])
     
     return df
 
@@ -56,7 +57,7 @@ def predict(client: ClientID):
         raise HTTPException(status_code=404, detail="Client ID non trouvé dans le jeu de test")
 
     try:
-        model_features = df.drop(columns=["TARGET"]).columns.tolist()
+        model_features = df.columns.tolist()
         client_data = df.loc[client_id, model_features]
         client_input = pd.DataFrame([client_data])
     except Exception as e:
@@ -69,6 +70,7 @@ def predict(client: ClientID):
         raise HTTPException(status_code=500, detail=f"Erreur lors de la prédiction : {str(e)}")
 
     return PredictionResult(prediction=prediction, probability=probability)
+
 
 
 
