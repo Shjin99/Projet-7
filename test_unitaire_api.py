@@ -19,8 +19,13 @@ def test_get_clients():
 def test_predict_valid_id():
     client_ids = client.get("/clients").json()["client_ids"]
     if client_ids:
-        valid_id = client_ids[0]
+        valid_id = int(client_ids[0])  # S'assurer que l'ID du client est un entier
         response = client.post("/predict", json={"client_id": valid_id})
+        
+        # Vérifier la réponse et afficher les erreurs en cas de problème
+        if response.status_code != 200:
+            print(response.json())  # Cela permet de voir le détail de l'erreur de validation
+        
         assert response.status_code == 200
         result = response.json()
         assert "prediction" in result
@@ -29,6 +34,7 @@ def test_predict_valid_id():
         assert 0 <= result["probability"] <= 1
     else:
         assert False, "La liste des client_ids est vide"
+
 
 def test_predict_invalid_id():
     response = client.post("/predict", json={"client_id": -999})
