@@ -6,15 +6,17 @@ from lightgbm import LGBMClassifier
 import uvicorn
 import os
 
-# --- Chemins relatifs --- 
-model_path = r"C:\Users\saida\OneDrive\Bureau\openclassroom\Projet7\backend\LGBMClassifier1.pkl"
+# --- Obtenir le répertoire du fichier actuel (api.py) ---
+current_dir = os.path.dirname(__file__)
 
-test_path = r"C:\Users\saida\OneDrive\Bureau\openclassroom\Projet7\backend\application_test.csv"  
+# --- Chemins relatifs vers les fichiers ---
+model_path = os.path.join(current_dir, "LGBMClassifier1.pkl")
+test_path = os.path.join(current_dir, "application_test.csv")
 
 # --- Charger le modèle pré-entraîné ---
-model = pickle.load(open(model_path, 'rb'))
+with open(model_path, 'rb') as f:
+    model = pickle.load(f)
 
-# --- Charger les données de test uniquement ---
 application_test = pd.read_csv(test_path, index_col=0)
 
 # --- Définir les features utilisées par le modèle
